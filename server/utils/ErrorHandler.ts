@@ -1,10 +1,3 @@
-// Reference path="node_modules"
-interface ErrorConstructor {
-    captureStackTrace(error: Object, constructor?: Function): void;
-  }
-
- 
-  
 class ErrorHandler extends Error {
     statusCode: Number; 
 

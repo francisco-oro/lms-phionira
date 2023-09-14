@@ -28,7 +28,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     }, 
     email: {
         type: String,
-        required: [true, "Por favor ingresa tu dirección de correo electŕonicp"],
+        required: [true, "Por favor ingresa tu dirección de correo electŕonico"],
         validate: {
             validator: function (value:string){
                 return emailRegexPattern.test(value);
@@ -39,7 +39,6 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     },
     password:{
         type:String,
-        required: [true, "Por favor ingresa una conraseña"], 
         minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
         select: false,
     },
@@ -60,7 +59,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
             courseId: String
         }
     ]
-}, {timestamps:true});
+}, 
+{timestamps:true});
 
 // Hash Password before saving
 userSchema.pre<IUser>('save', async function (next) {
@@ -69,16 +69,20 @@ userSchema.pre<IUser>('save', async function (next) {
     }
     this.password = await bcrypt.hash(this.password, 10);
     next();
-})
+});
 
 // Sign access token
 userSchema.methods.SignAccessToken = function () {
-    return jwt.sign({id: this._id}, process.env.ACCESS_TOKEN || '');
+    return jwt.sign({id: this._id}, process.env.ACCESS_TOKEN || '', {
+        expiresIn: "5m",
+    });
 };
 
 // Sign refresh token
 userSchema.methods.SignRefreshToken = function () {
-    return jwt.sign({id: this._id}, process.env.REFRESH_TOKEN || '');
+    return jwt.sign({id: this._id}, process.env.REFRESH_TOKEN || '', {
+        expiresIn: "3d",
+    });
 }
 
 // compare password

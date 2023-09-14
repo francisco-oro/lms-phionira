@@ -1,7 +1,12 @@
 import ErrorHandeler from "../utils/ErrorHandler";
 import { NextFunction, Request, Response } from "express";
 
-export const ErrorMiddleware = (err:any, req:Request, res:Response, next:NextFunction) => {
+export const ErrorMiddleware = (
+    err:any, 
+    req:Request, 
+    res:Response, 
+    next:NextFunction
+    ) => {
     err.statusCode = err.statusCode || 500;
     err.message = err.message || "Internal server error";
 
@@ -13,7 +18,7 @@ export const ErrorMiddleware = (err:any, req:Request, res:Response, next:NextFun
 
     // Declare key error
     if (err.code === 11000) {
-        const message = `Duplicare ${Object.keys(err.keyValue)} entered`;
+        const message = `Duplicaye ${Object.keys(err.keyValue)} entered`;
         err = new ErrorHandeler(message, 400);
     }
 

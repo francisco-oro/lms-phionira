@@ -8,6 +8,7 @@ import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendMail";
 import { sendToken } from "../utils/jwt";
+import { redis } from "../utils/redis";
 
 // Register user
 interface IRegistrationBody {
@@ -175,13 +176,16 @@ export const loginUser = CatchAsyncError(async(req:Request, res:Response, next:N
     } catch (error:any) {
         return next(new ErrorHandler(error.message, 400))
     }
-})
+}); 
 
 // logout user
 export const logoutUser = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
     try {
         res.cookie("access_token", "", {maxAge: 1});
         res.cookie("refresh_token", "", {maxAge: 1});
+        const userId = req.user?._id || "";
+        redis.del(userId);
+
         res.status(200).json({
             success: true,
             message: "Has cerrado sesión exitosamente"
@@ -190,4 +194,4 @@ export const logoutUser = CatchAsyncError(async(req:Request, res:Response, next:
     } catch (error:any) {
         return next(new ErrorHandler(error.message, 400))
     }
-})
+});
