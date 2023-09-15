@@ -277,3 +277,115 @@ export const addAnswer = CatchAsyncError(async(req:Request, res:Response, next:N
         return next(new ErrorHandler(error.message, 500));
     }
 })
+
+
+// Add a review in the course
+interface IAddReviewData {
+    review: string; 
+    courseId: string;
+    rating: number;
+    userId: string; 
+}
+
+export const addReview = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
+    try {
+        const userCourseList = req.user?.courses;
+
+        const courseId = req.params.id;
+
+        console.log(courseId);
+
+        // Check if courseId already exists in uscerCourseList basedn on ._id 
+
+        const courseExists = userCourseList?.some((course:any) => course._id.toString() === courseId.toString());
+    
+        if (!courseExists) {
+            return next(new ErrorHandler("You are not eligible to access this resource", 404));
+        }
+
+        const course = await CourseModel.findById(courseId);
+
+        const { review, rating } = req.body as IAddReviewData;
+
+        const reviewData:any = {
+            user:req.user,
+            comment: review,
+            rating 
+        }
+
+        course?.reviews.push(reviewData);
+
+        let avg = 0;
+
+        course?.reviews.forEach((rev:any) => {
+            avg += rev.rating;
+        });
+
+        if (course) {
+            course.ratings = avg / course.reviews.length; 
+        }
+
+        await course?.save(); 
+
+        const notification = { 
+            title: "Nueva valoración recibida",
+            message: `${req.user?.name} ha puesto una nueva valoración en ${course?.name}`
+        }
+
+        // Create notification
+
+        res.status(200).json({
+            success: true,
+            course, 
+        }); 
+
+    } catch (error:any) {
+        return next(new ErrorHandler(error.message, 500)); 
+    }
+});
+
+interface IAddReviewData { 
+    comment: string;
+    courseId: string; 
+    reviewId: string; 
+}
+
+// Add reply in review 
+export const addReplyToReview = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
+    try {
+        const { comment, courseId, reviewId} = req.body as IAddReviewData;
+
+        const course = await CourseModel.findById(courseId);
+
+        if (!course) {
+            return next(new ErrorHandler("Course not found", 404));
+        }
+
+        const review = course?.reviews?.find((rev:any)=>rev._id.toString() === reviewId);
+
+        if (!review) {
+            return next(new ErrorHandler("Review not found", 404));
+        }
+
+        const replyData: any = {
+            user: req.user,
+            comment
+        }
+
+        if (!review.commentReplies) {
+            review.commentReplies = [];
+        }
+
+        review.commentReplies?.push(replyData);
+
+        await course?.save();
+
+        res.status(200).json({
+            success: true,
+            course, 
+        });
+
+    } catch (error:any) {
+        return next( new ErrorHandler(error.message, 500))
+    }
+}); 
