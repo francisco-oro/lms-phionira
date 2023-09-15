@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activa tu cuenta Phionira</title>
+    <title>Nueva respuesta en <=% title %></title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
                                                         style="display:block;font-family: Noto Sans, Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:white;text-decoration:none;line-height:28px;font-size:20px;font-weight:400;margin:10px 20px 10px;border-bottom:2px solid white;padding-bottom:20px">
                                                         <span
                                                             style="display:block;font-family: Noto Sans, Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:white;text-decoration:none;line-height:28px;font-size:23px;font-weight:400;margin:10px 30px 0px">
-                                                            ¡Te damos la bienvenida a Phionira!
+                                                            Nueva respuesta en <%= title %> 
                                                             <span style="font-size:16px;line-height:22px;display:block">
                                                             </span>
                                                         </span>
@@ -69,24 +69,13 @@
                                                                         style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
                                                                         <br>
                                                                         Hola, <span style="color:#000080;">
-                                                                            <%= user.name %>,
+                                                                            <%= name %>,
                                                                         </span> <br>
-                                                                        Gracias por registrate en Phionira. A
-                                                                        continuación, usa el siguiente código para
-                                                                        activar tu cuenta: <br>
-                                                                    <div
-                                                                        style="display: flex; color: #e2e5e6; justify-content: center;">
-                                                                        <h2
-                                                                            style="background-color: #010101; padding: 2rem;">
-                                                                            <%= activationCode %>
-                                                                        </h2>
-                                                                    </div><br>
-                                                                    Por favor toma en cuenta que el código de activación
-                                                                    expirará después de 5 minutos, por lo cual te
-                                                                    sugerimos que lo uses tan pronto como te sea
-                                                                    posible. <br><br>
-                                                                    Si no has iniciado un proceso de registro para una
-                                                                    cuenta Phionira, por favor ignora este mensaje <br>
+                                                                        Alguien ha respondido tu pregunta en el video <span style="font: bold; color: #000080;">"<%= title %>".</span> <br>
+
+                                                                    Por favor inicia sesión en nuestro <a href="https://www.phionira.com" style="text-decoration: none;">Sitio web</a> para responder y seguir en contacto. <br>
+                                                                    <br>
+                                                                    Gracias por formar parte de la comunidad Phionira
                                                                     </p>
 
                                                                 </td>
@@ -122,7 +111,7 @@
                                                         style="display:block;font-family:Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:#bbb;text-decoration:none;line-height:30px;padding:20px 20px 30px;display:block;font-size:13px">
                                                         Se acaba de enviar un mail a <a style="color:white"
                                                             target="_blank">
-                                                            <%= user.email %>
+                                                            <%= email %>
                                                         </a><br>
                                                         Copyright © Phionira.com
                                                     </span>
