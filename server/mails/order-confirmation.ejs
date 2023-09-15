@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de orden</title>
+</head>
+
+<body>
+    <div class="">
+        <div class="aHl"></div>
+        <div id=":q8" tabindex="-1"></div>
+        <div id=":1hg" class="ii gt"
+            jslog="20277; u014N:xr6bB; 1:WyIjdGhyZWFkLWY6MTc3NDcyNTE0NzE1MTM5ODc2OCIsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGwsW11d; 4:WyIjbXNnLWY6MTc3NDcyNTE0NzE1MTM5ODc2OCIsbnVsbCxbXV0.">
+            <div id=":1hh" class="a3s aiL ">
+                <div class="adM">
+
+                </div>
+                <div style="background:#ececec">
+                    <div class="adM">
+                    </div>
+                    <table cellpadding="0" cellspacing="0" border="0" align="center" height="100%" width="100%"
+                        style="height:100%;width:100%;padding:20px" bgcolor="#ECECEC">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table cellpadding="0" cellspacing="0" border="0" align="center" width="100%"
+                                        style="max-width:580px" bgcolor="#ffffff">
+                                        <tbody>
+                                            <tr width="100%" valign="top" bgcolor="#151f39">
+                                                <td>
+                                                    <a style="display:block" href="#m_7592892073543078336_">
+                                                        <img src="https://res.cloudinary.com/durbs4yfq/image/upload/v1694784010/logo/rectangle_light_no-bg_4x_ntpowh.png"
+                                                            alt="Phionira.com" title="Phionira.com"
+                                                            style="display:block;border:0px;width:209px;height: auto;margin: auto;"
+                                                            class="CToWUd" data-bit="iit">
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr width="100%" valign="top" height="7" bgcolor="#151f39">
+                                                <td>
+                                                    <span
+                                                        style="display:block;font-family: Noto Sans, Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:white;text-decoration:none;line-height:28px;font-size:20px;font-weight:400;margin:10px 20px 10px;border-bottom:2px solid white;padding-bottom:20px">
+                                                        <span
+                                                            style="display:block;font-family: Noto Sans, Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:white;text-decoration:none;line-height:28px;font-size:23px;font-weight:400;margin:10px 30px 0px">
+                                                            ¡Tu nueva orden en Phionira está confirmada! 
+                                                            <p style="font-size:16px;line-height:22px;display:block">
+                                                                Y estamos tan emocionados como tú
+                                                            </p>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border-bottom:1px solid #e2e5e6" bgcolor="#ffffff">
+                                                    <table style="padding:20px 30px" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                        <tbody >
+                                                        <tr>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                <span style="font-size:18px;font-weight:bold;color:#010101;text-decoration:underline"> Resumen de orden
+                                                                </span> <br>
+                                                                Hola, <%= order.username %>, aquí tienes un resumen de lo que ordenaste: 
+                                                                <br>
+                                                                <ul style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    <li><span style="color:#000080;">Número de orden: </span><%= order._id %>
+                                                                    </li>
+                                                                    <li><span style="color:#000080;">Fecha de operación: </span><%= order.date %>
+                                                                    </li>
+                                                                </ul>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <table style="display: block; margin: auto; text-align: center;" width="100%" cellspacing="30" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    Producto
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    Cantidad
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    Costo
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    <%= order.name %>
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    <%= order.qty %>
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    <%= order.price %> MXN
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    Subtotal
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    <%= order.price %> MXN
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    Total
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="color:#010101;font-size:15px;line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    <%= order.price %> MXN
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr width="580" valign="top" height="15" bgcolor="#ffffff">
+                                                <td>
+                                                    <span
+                                                        style="display:block;text-align:center;color:#fff;text-decoration:none;line-height:15px">&nbsp;</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="border-bottom:1px solid #e2e5e6" bgcolor="#FFFFFF">
+                                                    <table style="padding:20px 30px" width="100%" cellspacing="0"
+                                                        cellpadding="0" border="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <p
+                                                                        style="color:#010101;font-size:15px; text-align: center; line-height:28px;font-weight:400;font-family:Noto Sans,Helvetica,Arial,sans-serif;display:block;text-decoration:none">
+                                                                    Gracias por formar parte de la comunidad Phionira
+                                                                    </p>
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr valign="top" bgcolor="#151f39" width="100%" height="1">
+                                                <td>
+                                                    <span
+                                                        style="display:block;font-family:Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:#fff;text-decoration:none;line-height:30px;height:1px;background:#f5f5f5;display:block">&nbsp;
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr width="100%" valign="top" height="30" bgcolor="#151f39">
+                                                <td>
+                                                    <p
+                                                        style="margin-bottom:0px;padding:15px 20px 0px;display:block;font-family:Noto Sans,Helvetica,Arial,sans-serif;font-size:12px;color:#bbb;text-align:center">
+                                                        Si tienes alguna pregunta o requieres asistencia de nuestro
+                                                        equipo de soporte, no dudes en contactarnos a través del correo
+                                                        <a href="mailto:team@phionira.com"
+                                                            style="display:inline-block;font-family:Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:#bbb;text-decoration:underline;line-height:30px;padding:0px 5px 0px;font-size:12px"
+                                                            target="_blank"> team@phionira.com</a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" bgcolor="#151f39" width="100%" height="30">
+                                                <td>
+                                                    <span
+                                                        style="display:block;font-family:Noto Sans,Helvetica,Arial,sans-serif;text-align:center;color:#bbb;text-decoration:none;line-height:30px;padding:20px 20px 30px;display:block;font-size:13px">
+                                                        Se acaba de enviar un mail a <a style="color:white"
+                                                            target="_blank">
+                                                            <%= order.email %>
+                                                        </a><br>
+                                                        Copyright © Phionira.com
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="yj6qo"></div>
+                    <div class="adL">
+                    </div>
+                </div>
+                <div class="adL">
+                </div>
+            </div>
+        </div>
+        <div id=":qe" class="ii gt" style="display:none">
+            <div id=":qw" class="a3s aiL "></div>
+        </div>
+        <div class="hi"></div>
+    </div>
+</body>
+
+</html>
