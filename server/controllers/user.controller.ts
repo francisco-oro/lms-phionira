@@ -9,7 +9,7 @@ import path from "path";
 import sendMail from "../utils/sendMail";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getAllUsersService, getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById, updateUserRoleService } from "../services/user.service";
 import cloudinary from "cloudinary";
 import cron from  "node-cron"; 
 import NotificationModel from "../models/notification.model";
@@ -423,3 +423,13 @@ export const getAllUsers = CatchAsyncError(
         }
     }
 )
+
+// Update user role --only for admin
+export const updateUserRole = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
+    try {
+        const { id, role } = req.body; 
+        updateUserRoleService(res, id, role);
+    } catch (error:any) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+})
