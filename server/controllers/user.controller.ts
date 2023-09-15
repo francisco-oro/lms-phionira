@@ -11,6 +11,8 @@ import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt
 import { redis } from "../utils/redis";
 import { getUserById } from "../services/user.service";
 import cloudinary from "cloudinary";
+import cron from  "node-cron"; 
+import NotificationModel from "../models/notification.model";
 
 // Register user
 interface IRegistrationBody {
@@ -407,4 +409,12 @@ export const updateProfilePicture = CatchAsyncError(async(req:Request, res:Respo
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400))
     }
-}) 
+});
+
+
+// Delete notification -- only admin
+cron.schedule("0 0 0 * * *", async() => {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 100);
+    await NotificationModel.deleteMany({status:"read", createdAt: {$lt: thirtyDaysAgo}});
+    console.log("Deleted read notifications");
+}); 
