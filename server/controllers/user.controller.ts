@@ -9,7 +9,7 @@ import path from "path";
 import sendMail from "../utils/sendMail";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById } from "../services/user.service";
 import cloudinary from "cloudinary";
 import cron from  "node-cron"; 
 import NotificationModel from "../models/notification.model";
@@ -412,9 +412,14 @@ export const updateProfilePicture = CatchAsyncError(async(req:Request, res:Respo
 });
 
 
-// Delete notification -- only admin
-cron.schedule("0 0 0 * * *", async() => {
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 100);
-    await NotificationModel.deleteMany({status:"read", createdAt: {$lt: thirtyDaysAgo}});
-    console.log("Deleted read notifications");
-}); 
+//  Get all users --only for admin
+
+export const getAllUsers = CatchAsyncError(
+    async (req:Request, res:Response, next:NextFunction) => {
+        try {
+            getAllUsersService(res);
+        } catch (error:any) {
+            return next(new ErrorHandler(error.message, 400)); 
+        }
+    }
+)
