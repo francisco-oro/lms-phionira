@@ -200,7 +200,7 @@ export const logoutUser = CatchAsyncError(async(req:Request, res:Response, next:
     }
 });
 
-// Update acess token 
+// Update access token 
 export const updateAccessToken = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
     try {
         const refresh_token = req.cookies.refresh_token as string; 
@@ -215,7 +215,7 @@ export const updateAccessToken = CatchAsyncError(async(req:Request, res:Response
             const session = await redis.get(decoded.id as string);
 
             if (!session) {
-                return next(new ErrorHandler(message, 400));
+                return next(new ErrorHandler("Por favor inicia sesión para acceder a este recurso ", 400));
             }
 
             const user = JSON.parse(session);
@@ -232,6 +232,8 @@ export const updateAccessToken = CatchAsyncError(async(req:Request, res:Response
 
             res.cookie("access_token", accessToken, accessTokenOptions );
             res.cookie("refresh_token", refreshToken, refreshTokenOptions );
+            
+            await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7 days
 
             res.status(200).json({
                 status: "sucess",
