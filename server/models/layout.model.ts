@@ -20,7 +20,7 @@ interface Layout extends Document {
     categories: Category[]
     banner: {
         image: BannerImage;
-        title: string;
+        title: string;  
         subTitle: string; 
     }; 
 }
@@ -50,6 +50,6 @@ const layoutSchema = new Schema<Layout> ({
     }
 })
 
-const LayoutModel = model<Layout>('layout', layoutSchema);
+const LayoutModel = model<Layout>('Layout', layoutSchema);
 
-export default LayoutModel;
+export default LayoutModel; 
