@@ -116,14 +116,18 @@ export const activateUser = CatchAsyncError(
                 activation_token,
                 process.env.ACTIVATION_SECRET as string
             ) as { user: IUser; activationCode: string };
-
+            
+            console.log(newUser.activationCode); 
             if (newUser.activationCode !== activation_code) {
                 return next(new ErrorHandler("Código de activación inválido", 400));
             }
 
             const { name, email, password } = newUser.user;
+            console.log(newUser.user);
+            console.log(name, email, password); 
 
             const existsUser = await userModel.findOne({ email });
+            console.log(existsUser);
 
             if (existsUser) {
                 return next(
