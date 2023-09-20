@@ -58,7 +58,7 @@ const Login:FC<Props> = ({setRoute}) => {
 
             <div className="w-full mt-5 relative mb-1">
             <label className={`${styles.label}`} htmlFor="email">
-                Ingresa tu conraseña
+                Ingresa tu contraseña
             </label>
             <input
                 type={!show ? "password" : "text"}
