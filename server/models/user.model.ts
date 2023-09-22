@@ -14,6 +14,8 @@ export interface IUser extends Document{
         url: string;
     },
     role: string;
+    phoneNumber: number;
+    dateOfBirth: Date; 
     isVerified: boolean; 
     courses: Array<{courseId: string}>;
     comparePassword: (password: string) => Promise<boolean>; 
@@ -50,6 +52,12 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
         type: String,
         default: "user",
     },
+    phoneNumber: {
+        type: Number,
+    },
+    dateOfBirth: {
+        type: Date, 
+    }, 
     isVerified: {
         type:Boolean,
         default: false,
