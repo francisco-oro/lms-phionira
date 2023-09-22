@@ -286,25 +286,38 @@ export const socialAuth = CatchAsyncError(async(req:Request, res:Response, next:
 interface IUpdateUserInfo {
     name?: string;
     email?: string; 
+    phoneNumber?: string; 
+    dateOfBirth?: Date;
 }
 
 export const updateUserInfo = CatchAsyncError(async(req:Request, res:Response, next:NextFunction) => {
     try {
-        const {name, email} = req.body as IUpdateUserInfo;
+        const {name, phoneNumber, dateOfBirth} = req.body as IUpdateUserInfo;
         const userId = req.user?._id;
         console.log(userId)
         const user = await userModel.findById(userId);
 
-        if (email && user) {
-            const isEmailExist = await userModel.findOne({email});
-            if (isEmailExist) {
-                return next(new ErrorHandler("Esa dirección de correo electrónico ya está asociada a una cuenta", 400));
-            }
-            user.email = email;
-        }
-
         if (name && user) {
             user.name = name;
+        }
+
+        if (phoneNumber && user) {
+            if (phoneNumber.length !== 10) {
+                return next(new ErrorHandler("Por favor ingrese su número telefónico a diez dígitos", 400));
+            }
+            user.phoneNumber = phoneNumber;
+        }
+        
+        if (dateOfBirth && user) {
+            const currentDate = new Date();
+            const tenYearsAgo = new Date();
+            tenYearsAgo.setFullYear(currentDate.getFullYear() - 10);
+
+            if (new Date(dateOfBirth) > tenYearsAgo) {
+                return next(new ErrorHandler("La fecha de nacimiento debe ser mayor a 10 años", 400));
+            }
+
+            user.dateOfBirth = dateOfBirth;
         }
 
         await user?.save();

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { styles } from '../../../app/styles/style';
 import { useRegisterMutation } from '@/redux/features/auth/authApi';
 import toast from 'react-hot-toast';
+import { signIn } from 'next-auth/react';
 
 type Props = {
     setRoute: (route: string ) => void; 

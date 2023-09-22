@@ -14,7 +14,7 @@ export interface IUser extends Document{
         url: string;
     },
     role: string;
-    phoneNumber: number;
+    phoneNumber: string;
     dateOfBirth: Date; 
     isVerified: boolean; 
     courses: Array<{courseId: string}>;
@@ -53,7 +53,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
         default: "user",
     },
     phoneNumber: {
-        type: Number,
+        type: String,
+        minlength: [10, "Escriba su número telefónico a diez dígitos"]
     },
     dateOfBirth: {
         type: Date, 

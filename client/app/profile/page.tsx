@@ -17,7 +17,7 @@ const Page:FC<Props> = (props) => {
     <div>
         <Protected>
         <Heading
-      title={`Perfil de ${user?.name}`}
+      title={`Perfil de ${user?.name} - Phionira`}
       description="Phionira es una plataforma de aprendizaje para ayudar a los estudiantes a acreditar su examen de admisión en la UAEMéx con asesoría de profesores con amplia experiencia en el área"
       keywords="Curso UAEMéx, Inglés, Programación, React, SQL, Full-stack development"
       />

@@ -5,7 +5,8 @@ import { AiOutlineCamera } from "react-icons/ai";
 import avatarIcon from "../../../public/assets/avatar.png";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { toast } from "react-hot-toast";
-import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
+import { useUpdateAvatarMutation, useEditProfileMutation } from "@/redux/features/user/userApi";
+import { formatDate } from "../../utils/profileUtils";
 
 type Props = {
   avatar: string | null;
@@ -15,10 +16,9 @@ type Props = {
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [name, setName] = useState(user && user.name);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
-  const [dateOfBirth, setDateOfBirth] = useState(user && user.dateOfBirth);
+  const [dateOfBirth, setDateOfBirth] = useState(user && formatDate(user.dateOfBirth));
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
-  // const [editProfile, { isSuccess: success, error: updateError }] =
-  //   useEditProfileMutation();
+  const [editProfile, { isSuccess: success, error: updateError }] = useEditProfileMutation();
   const [loadUser, setLoadUser] = useState(false);
   const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
 
@@ -38,42 +38,64 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
 
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || success) {
       setLoadUser(true);
     }
-    if (error) {
+    if (error || updateError) {
       console.log(error);
+      if(updateError){
+        if ("data" in updateError) {
+          const errorData = updateError as any; 
+          toast.error(errorData.data.message); 
+        }
+      }
     }
-  }, [isSuccess, error])
+
+    if (success) {
+      toast.success("Datos actualizados exitosamente");
+    }
+    if (error) {
+
+  }
+
+  }, [isSuccess, error, success, updateError])
 
 
   const handleSubmit = async (e: any) => {
-    console.log("submit");
+    e.preventDefault();
+    if (name !== "") {
+      await editProfile({
+        name, phoneNumber, dateOfBirth
+      })
+    }
   };
+    
 
   return (
-    <div className="w-full flex flex-col justify-center items-center mt-[80px]">
-      <div className="relative">
-        <Image
-          src={user.avatar || avatar ? user.avatar.url || avatar : avatarIcon}
-          alt=""
-          width={120}
-          height={120}
-          className="w-[120px] h-[120px] cursor-pointer border-[3px] border-[#4c0615] dark:border-[#9b5094] rounded-full"
-        />
-        <input
-          type="file"
-          name=""
-          id="avatar"
-          className="hidden"
-          onChange={imageHandler}
-          accept="image/png,image/jpg,image/jpeg,image/webp"
-        />
-        <label htmlFor="avatar">
-          <div className="w-[30px] h-[30px] bg-slate-900 rounded-full absolute bottom-2 right-2 flex items-center justify-center cursor-pointer">
-            <AiOutlineCamera size={20} className="z-1" />
-          </div>
-        </label>
+    <>
+      <div className="w-full flex justify-center">
+        <div className="relative">
+          <Image
+            src={user.avatar || avatar ? user.avatar.url || avatar : avatarIcon}
+            alt=""
+            width={120}
+            height={120}
+            className="w-[120px] h-[120px] cursor-pointer border-[3px] border-[#4c0615] dark:border-[#9b5094] rounded-full"
+          />
+          <input
+            type="file"
+            name=""
+            id="avatar"
+            className="hidden"
+            onChange={imageHandler}
+            accept="image/png,image/jpg,image/jpeg,image/webp"
+          />
+          <label htmlFor="avatar">
+            <div className="w-[30px] h-[30px] bg-slate-900 rounded-full absolute bottom-2 right-2 flex items-center justify-center cursor-pointer">
+              <AiOutlineCamera size={20} className="z-1" />
+            </div>
+          </label>
+        </div>
       </div>
       <br />
       <br />
@@ -85,11 +107,12 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
                 Nombre completo
               </label>
               <input
+                name="name"
                 type="text"
                 className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
                 required
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {setName(e.target.value); console.log(e.target.value)}}
               />
             </div>
             <div className="w-[100%] pt-2">
@@ -113,17 +136,20 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
                 className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
                 required
                 value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
             <div className="w-[100%] pt-2">
               <label className="block pb-2 dark:text-white text-black">
                 Fecha de nacimiento
               </label>
+              {/* Date of birth not showing up on the client side */}
               <input
                 type="date"
                 className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
                 required
                 value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
               />
             </div>
             <input
@@ -136,7 +162,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
         </form>
         <br />
       </div>
-    </div>
+    </>
   );
 };
 
