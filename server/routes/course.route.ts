@@ -1,6 +1,7 @@
 import express from "express";
 import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, getAllCourseContents, getAllCourses, getCourseByUser, getSingleCourse, uploadCourse } from "../controllers/course.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
+import { generateVideoUrl } from "../controllers/course.controller";
 
 const courseRouter = express.Router();
 
@@ -60,6 +61,8 @@ courseRouter.put(
 );  
 
 courseRouter.get("/admin/get-courses", isAuthenticated, authorizeRoles("admin"), getAllCourseContents);
+
+courseRouter.post("/getVdoCipherOTP", generateVideoUrl);
 
 courseRouter.delete("/admin/delete-course/:id", isAuthenticated, authorizeRoles("admin"), deleteCourse);
 
