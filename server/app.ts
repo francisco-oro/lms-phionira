@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // cors => cross origin resource origin  
 app.use(cors({
-    origin: ["http://localhost:3000"], 
+    origin: ["http://localhost:3000", "https://cqvd9tj2-3000.usw3.devtunnels.ms"], 
     credentials: true
 }))
 

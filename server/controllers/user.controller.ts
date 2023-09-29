@@ -89,6 +89,7 @@ export const createActivationToken = (user: any): IActivationToken => {
         {
             user,
             activationCode,
+   
         },
         process.env.ACTIVATION_SECRET as Secret,
         {
@@ -239,10 +240,7 @@ export const updateAccessToken = CatchAsyncError(async(req:Request, res:Response
             
             await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7 days
 
-            res.status(200).json({
-                status: "sucess",
-                accessToken
-            })
+            next();
 
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400))

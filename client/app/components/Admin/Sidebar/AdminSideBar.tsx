@@ -190,7 +190,7 @@ const Sidebar = () => {
             />
 
             <Item
-              title="Invoices"
+              title="Facturas"
               to="/admin/invoices"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}

@@ -1,45 +1,73 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseInformation from "./CourseInformation";
 import CourseOptions from "./CourseOptions";
 import CourseData from "./CourseData";
 import CourseContent from "./CourseContent"
 import CoursePreview from "./CoursePreview"
+import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 type Props = {};
 
 const CreateCourse = (props: Props) => {
+  const [createCourse, {isLoading, isSuccess, error}] = useCreateCourseMutation();
+  
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Curso creado exitosamente");
+      redirect("/admin/all-courses");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [isLoading, isSuccess, error]);
+  
   const [active, setActive] = useState(0);
   const [courseInfo, setCourseInfo] = useState({
-    name: "",
-    description: "",
-    price: "",
-    estimatedPrice: "",
-    tags: "",
-    level: "",
-    categories: "",
-    demoUrl: "",
+    name: "Matemáticas aplicadas para la venta de alcohol",
+    description: "Este curso te enseñará cómo aplicar conceptos matemáticos en el contexto de la venta de alcohol. Aprenderás cómo calcular márgenes de beneficio, realizar análisis de datos y tomar decisiones basadas en información numérica",
+    price: "4000",
+    estimatedPrice: "4500",
+    tags: "Alcoholismo, Matemáticas, Negocios, Finanzas, Emprendimiento",
+    level: "Intermedio",
+    categories: "Matemáticas",
+    demoUrl: "4e42a2cb571d4f0b9ff486c4cd1406dc",
     thumbnail: "",
   });
-  const [benefits, setBenefits] = useState([{ title: "" }]);
-  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
+  const [benefits, setBenefits] = useState([
+    { title: "Mejora de habilidades de resolución de problemas" },
+    { title: "Mejora de habilidades de pensamiento crítico" },
+    { title: "Incremento de conocimientos en la materia" },
+  ]);
+  
+  const [prerequisites, setPrerequisites] = useState([
+    { title: "Comprensión básica de matemáticas" },
+    { title: "Familiaridad con conceptos de programación" },
+    { title: "Acceso a una computadora con conexión a internet" },
+  ]);
+  
     // Add sectionId to each video section object
   const [courseContentData, setCourseContentData] = useState([
-    {
-      sectionId: 1,
-      videoUrl: "",
-      title: "",
-      description: "",
-      videoSection: "Sección sin título",
-      videoLength: "",
-      links: [
-        {
-          title: "",
-          url: "",
-        },
-      ],
-      suggestion: "",
-    },
+  {
+    sectionId: 1,
+    videoUrl: "4e42a2cb571d4f0b9ff486c4cd1406dc",
+    title: "Introducción al curso",
+    description: "En esta sección, aprenderás sobre los objetivos del curso y lo que puedes esperar obtener al tomarlo.",
+    videoSection: "Sección 1: Introducción",
+    videoLength: "10:30",
+    links: [
+      {
+        title: "Recursos adicionales",
+        url: "https://ejemplo.com/recursos",
+      },
+    ],
+    suggestion: "Si tienes alguna pregunta o necesitas más información, no dudes en contactar al instructor.",
+  }
   ]);
 
   const [courseData, setCourseData] = useState({});
@@ -83,6 +111,10 @@ const CreateCourse = (props: Props) => {
 
   const handleCourseCreate = async (e:any) => {
     const data = courseData;
+
+    if (!isLoading) {
+      await createCourse(data);
+    }
   }
   return (
     <div className="w-full flex min-h-screen">
