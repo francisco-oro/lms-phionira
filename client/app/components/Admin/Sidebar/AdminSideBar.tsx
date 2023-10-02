@@ -212,7 +212,7 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Curso en Vivo"
+              title="Cursos activos"
               to="/admin/courses"
               icon={<OndemandVideoIcon />}
               selected={selected}

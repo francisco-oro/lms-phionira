@@ -28,6 +28,7 @@ export const uploadCourse = CatchAsyncError(async (req: Request, res:Response, n
                 url: myCloud.secure_url,
             }
         }
+        
         createCourse(data, res, next);
 
     } catch (error:any) {
@@ -244,6 +245,8 @@ export const addAnswer = CatchAsyncError(async(req:Request, res:Response, next:N
         const newAnswer: any = {
             user: req.user,
             answer,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
         }
 
         // Add this answer to our course content 
@@ -382,7 +385,9 @@ export const addReplyToReview = CatchAsyncError(async(req:Request, res:Response,
 
         const replyData: any = {
             user: req.user,
-            comment
+            comment,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
         }
 
         if (!review.commentReplies) {
