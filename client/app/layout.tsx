@@ -24,6 +24,7 @@ const josefin = Josefin_Sans({
   variable: "--font-Josefin",
 });
 
+
 export default function RootLayout({
   children,
 }: {

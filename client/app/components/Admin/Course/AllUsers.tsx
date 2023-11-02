@@ -9,8 +9,14 @@ import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import Loader from "../../Loader/Loader";
 import { formatDate } from "@/app/utils/profileUtils";
 import { format } from "timeago.js";
-import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import {
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+  useUpdateUserRoleMutation,
+} from "@/redux/features/user/userApi";
 import { styles } from "@/app/styles/style";
+import toast from "react-hot-toast";
+
 type Props = {
   isTeam: boolean;
 };
@@ -18,7 +24,45 @@ type Props = {
 const AllCourses: FC<Props> = ({ isTeam }) => {
   const { theme, setTheme } = useTheme();
   const [active, setActive] = useState(false);
-  const { isLoading, data, error } = useGetAllUsersQuery({});
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("admin");
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [updateUserRole, { error: updateError, isSuccess }] =
+    useUpdateUserRoleMutation();
+  const { isLoading, data, refetch } = useGetAllUsersQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const [deleteUser, { isSuccess: deleteSuccess, error: deleteError }] =
+    useDeleteUserMutation({});
+
+  useEffect(() => {
+    if (updateError) {
+      if ("data" in updateError) {
+        const errorMessage = updateError as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+
+    if (isSuccess) {
+      refetch();
+      toast.success("User role updated successfully");
+      setActive(false);
+    }
+    if (deleteSuccess) {
+      refetch();
+      toast.success("Delete user successfully!");
+      setOpen(false);
+    }
+    if (deleteError) {
+      if ("data" in deleteError) {
+        const errorMessage = deleteError as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [updateError, isSuccess, deleteSuccess, deleteError]);
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
     { field: "name", headerName: "Nombre", flex: 0.5 },
@@ -34,10 +78,10 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
         return (
           <>
             <Button
-            //   onClick={() => {
-            //     setOpen(!open);
-            //     setCourseId(params.row.id);
-            //   }}
+              onClick={() => {
+                setOpen(!open);
+                setUserId(params.row.id);
+              }}
             >
               <AiOutlineDelete
                 className="dark:text-white text-black"
@@ -100,20 +144,31 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
     }
   }
 
+  const handleSubmit = async () => {
+    await updateUserRole({ email, role });
+  };
+
+  const handleDelete = async () => {
+    const id = userId;
+    await deleteUser(id);
+  };
+
   return (
     <div className="mt-[120px]">
       {isLoading ? (
         <Loader />
       ) : (
         <Box m="20px">
-          <div className="w-full flex justify-end">
-            <div 
-            className={`${styles.button} !w-[250px] !h-[35px]`}
-            onClick={() => setActive(!active)}
-            >
-              Añadir nuevo miembro
+          {isTeam && (
+            <div className="w-full flex justify-end">
+              <div
+                className={`${styles.button} !w-[200px] !rounded-[10px] !h-[35px] dark:border dark:border-[#ffffff6c]`}
+                onClick={() => setActive(!active)}
+              >
+                Editar usuario
+              </div>
             </div>
-          </div>
+          )}
           <Box
             m="40px 0 0 0"
             height="80vh"
@@ -168,6 +223,76 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {active && (
+            <Modal
+              open={active}
+              onClose={() => setActive(!active)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none">
+                <h1 className={`${styles.title}`}>Editar el rol de usuario</h1>
+                <div className="mt-4">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Dirección de correo electrónico..."
+                    className={`${styles.input}`}
+                  />
+                  <select
+                    name=""
+                    id=""
+                    className={`${styles.input} !mt-6`}
+                    onChange={(e: any) => setRole(e.target.value)}
+                    defaultValue={"Asignar rol"}
+                  >
+                    <option disabled className="text-black">Asignar rol</option>
+                    <option value="admin" className="text-black" >Administrador</option>
+                    <option value="user" className="text-black">Usuario</option>
+                    <option value="docente" className="text-black">Docente</option>
+
+                  </select>
+                  <br />
+                  <div
+                    className={`${styles.button} my-6 !h-[30px]`}
+                    onClick={handleSubmit}
+                  >
+                    Hecho 
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+          )}
+
+          {open && (
+            <Modal
+              open={open}
+              onClose={() => setOpen(!open)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none">
+                <h1 className={`${styles.title}`}>
+                  Are you sure you want to delete this user?
+                </h1>
+                <div className="flex w-full items-center justify-between mb-6 mt-4">
+                  <div
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#57c7a3]`}
+                    onClick={() => setOpen(!open)}
+                  >
+                    Cancel
+                  </div>
+                  <div
+                    className={`${styles.button} !w-[120px] h-[30px] bg-[#d63f3f]`}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+          )}
         </Box>
       )}
     </div>
